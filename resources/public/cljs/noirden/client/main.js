@@ -6,33 +6,40 @@ goog.require('fetch.remotes');
 noirden.client.main.$temperature = cljs.core.first.call(null,jayq.core.$.call(null,"\uFDD0'#temperature"));
 noirden.client.main.$humidity = cljs.core.first.call(null,jayq.core.$.call(null,"\uFDD0'#humidity"));
 noirden.client.main.to_dygraph_array = (function to_dygraph_array(datapoints){
-return cljs.core.to_array.call(null,cljs.core.map.call(null,(function (p__240498){
-var vec__240499__240500 = p__240498;
-var time_string__240501 = cljs.core.nth.call(null,vec__240499__240500,0,null);
-var scalar__240502 = cljs.core.nth.call(null,vec__240499__240500,1,null);
+return cljs.core.to_array.call(null,cljs.core.map.call(null,(function (p__263342){
+var vec__263343__263344 = p__263342;
+var time_string__263345 = cljs.core.nth.call(null,vec__263343__263344,0,null);
+var scalar__263346 = cljs.core.nth.call(null,vec__263343__263344,1,null);
 
-return cljs.core.array.call(null,(new Date(time_string__240501)),scalar__240502);
+return cljs.core.array.call(null,(new Date(time_string__263345)),scalar__263346);
 }),datapoints));
 });
-fetch.remotes.remote_callback.call(null,"latest-air-readings",cljs.core.Vector.fromArray([100]),(function (table){
-var vec__240503__240515 = cljs.core.reduce.call(null,(function (p__240504,p__240505){
-var vec__240506__240508 = p__240504;
-var ts__240509 = cljs.core.nth.call(null,vec__240506__240508,0,null);
-var hs__240510 = cljs.core.nth.call(null,vec__240506__240508,1,null);
-var vec__240507__240511 = p__240505;
-var time__240512 = cljs.core.nth.call(null,vec__240507__240511,0,null);
-var temp__240513 = cljs.core.nth.call(null,vec__240507__240511,1,null);
-var hum__240514 = cljs.core.nth.call(null,vec__240507__240511,2,null);
+/**
+* makes a javascript map from a clojure one
+*/
+noirden.client.main.clj__GT_js = (function clj__GT_js(cljmap){
+var out__263347 = cljs.core.js_obj.call(null);
 
-return cljs.core.Vector.fromArray([cljs.core.cons.call(null,cljs.core.Vector.fromArray([time__240512,temp__240513]),ts__240509),cljs.core.cons.call(null,cljs.core.Vector.fromArray([time__240512,hum__240514]),hs__240510)]);
+cljs.core.doall.call(null,cljs.core.map.call(null,(function (p1__263341_SHARP_){
+return (out__263347[cljs.core.name.call(null,cljs.core.first.call(null,p1__263341_SHARP_))] = cljs.core.second.call(null,p1__263341_SHARP_));
+}),cljmap));
+return out__263347;
+});
+fetch.remotes.remote_callback.call(null,"latest-air-readings",cljs.core.Vector.fromArray([0]),(function (table){
+var vec__263348__263360 = cljs.core.reduce.call(null,(function (p__263349,p__263350){
+var vec__263351__263353 = p__263349;
+var ts__263354 = cljs.core.nth.call(null,vec__263351__263353,0,null);
+var hs__263355 = cljs.core.nth.call(null,vec__263351__263353,1,null);
+var vec__263352__263356 = p__263350;
+var time__263357 = cljs.core.nth.call(null,vec__263352__263356,0,null);
+var temp__263358 = cljs.core.nth.call(null,vec__263352__263356,1,null);
+var hum__263359 = cljs.core.nth.call(null,vec__263352__263356,2,null);
+
+return cljs.core.Vector.fromArray([cljs.core.cons.call(null,cljs.core.Vector.fromArray([time__263357,temp__263358]),ts__263354),cljs.core.cons.call(null,cljs.core.Vector.fromArray([time__263357,hum__263359]),hs__263355)]);
 }),cljs.core.Vector.fromArray([cljs.core.Vector.fromArray([]),cljs.core.Vector.fromArray([])]),table);
-var temps__240516 = cljs.core.nth.call(null,vec__240503__240515,0,null);
-var hums__240517 = cljs.core.nth.call(null,vec__240503__240515,1,null);
+var temps__263361 = cljs.core.nth.call(null,vec__263348__263360,0,null);
+var hums__263362 = cljs.core.nth.call(null,vec__263348__263360,1,null);
 
-console.log(cljs.core.pr_str.call(null,cljs.core.first.call(null,temps__240516)));
-console.log(cljs.core.pr_str.call(null,(new Date(cljs.core.first.call(null,cljs.core.first.call(null,temps__240516))))));
-console.log("humidity");
-console.log(cljs.core.pr_str.call(null,cljs.core.array.call(null,(new Date(cljs.core.first.call(null,cljs.core.first.call(null,hums__240517)))),cljs.core.first.call(null,cljs.core.second.call(null,noirden.client.main.scalar)))));
-(new Dygraph(noirden.client.main.$temperature,noirden.client.main.to_dygraph_array.call(null,temps__240516)));
-return (new Dygraph(noirden.client.main.$humidity,noirden.client.main.to_dygraph_array.call(null,hums__240517)));
+(new Dygraph(noirden.client.main.$temperature,noirden.client.main.to_dygraph_array.call(null,temps__263361),noirden.client.main.clj__GT_js.call(null,cljs.core.ObjMap.fromObject(["\uFDD0'title"],{"\uFDD0'title":"temp"}))));
+return (new Dygraph(noirden.client.main.$humidity,noirden.client.main.to_dygraph_array.call(null,hums__263362)));
 }));

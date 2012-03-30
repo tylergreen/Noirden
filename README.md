@@ -2,6 +2,11 @@
 
 A website written in noir. 
 
+# Assumptions
+
+connects to a cappedCollection MongoDB on port 3001
+separate cron script (not included) write to this DB
+
 ## Usage
 
 ```bash

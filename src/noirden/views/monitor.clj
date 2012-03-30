@@ -12,7 +12,7 @@
 ;; did it this way bc select-keys returns unsorted hash-map :-(
 ;; needs test
 (defremote latest-air-readings [n]
-  (map #(map (fn [attr] (attr %)) [:time :rhumidity :ctemp])
+  (map #(map (fn [attr] (attr %)) [:time :ctemp :rhumidity])
                 (reading/latest-air-readings n)))
 
 (defpage "/monitor" []

@@ -12943,15 +12943,18 @@ noirden.client.main.to_dygraph_array = function(a) {
     return cljs.core.array.call(null, new Date(c), a)
   }, a))
 };
-fetch.remotes.remote_callback.call(null, "latest-air-readings", cljs.core.Vector.fromArray([100]), function(a) {
+noirden.client.main.clj__GT_js = function(a) {
+  var b = cljs.core.js_obj.call(null);
+  cljs.core.doall.call(null, cljs.core.map.call(null, function(a) {
+    return b[cljs.core.name.call(null, cljs.core.first.call(null, a))] = cljs.core.second.call(null, a)
+  }, a));
+  return b
+};
+fetch.remotes.remote_callback.call(null, "latest-air-readings", cljs.core.Vector.fromArray([0]), function(a) {
   var b = cljs.core.reduce.call(null, function(a, b) {
     var e = cljs.core.nth.call(null, a, 0, null), f = cljs.core.nth.call(null, a, 1, null), g = cljs.core.nth.call(null, b, 0, null), h = cljs.core.nth.call(null, b, 1, null), i = cljs.core.nth.call(null, b, 2, null);
     return cljs.core.Vector.fromArray([cljs.core.cons.call(null, cljs.core.Vector.fromArray([g, h]), e), cljs.core.cons.call(null, cljs.core.Vector.fromArray([g, i]), f)])
   }, cljs.core.Vector.fromArray([cljs.core.Vector.fromArray([]), cljs.core.Vector.fromArray([])]), a), a = cljs.core.nth.call(null, b, 0, null), b = cljs.core.nth.call(null, b, 1, null);
-  console.log(cljs.core.pr_str.call(null, cljs.core.first.call(null, a)));
-  console.log(cljs.core.pr_str.call(null, new Date(cljs.core.first.call(null, cljs.core.first.call(null, a)))));
-  console.log("humidity");
-  console.log(cljs.core.pr_str.call(null, cljs.core.array.call(null, new Date(cljs.core.first.call(null, cljs.core.first.call(null, b))), cljs.core.first.call(null, cljs.core.second.call(null, noirden.client.main.scalar)))));
-  new Dygraph(noirden.client.main.$temperature, noirden.client.main.to_dygraph_array.call(null, a));
+  new Dygraph(noirden.client.main.$temperature, noirden.client.main.to_dygraph_array.call(null, a), noirden.client.main.clj__GT_js.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'title"], {"\ufdd0'title":"temp"})));
   return new Dygraph(noirden.client.main.$humidity, noirden.client.main.to_dygraph_array.call(null, b))
 });
