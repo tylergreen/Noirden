@@ -1,5 +1,6 @@
 (ns noirden.server
-  (:require [noir.server :as server]))
+  (:require [noir.server :as server]
+            [noir.fetch.remotes :as remotes]))
 
 (server/load-views "src/noirden/views/")
 
