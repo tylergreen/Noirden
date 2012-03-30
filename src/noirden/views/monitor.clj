@@ -8,17 +8,18 @@
    [noir.fetch.remotes :only [defremote]]
         ))
 
-(defremote get-air-table []
-  (map vals (reading/latest-readings "air" 30)))
-
-(defpage "/environment-json" []
-   (json-str (reading/latest-readings "air" 30)))
+;; try to send these amount of data over network
+;; did it this way bc select-keys returns unsorted hash-map :-(
+;; needs test
+(defremote latest-air-readings [n]
+  (map #(map (fn [attr] (attr %)) [:time :rhumidity :ctemp])
+                (reading/latest-air-readings n)))
 
 (defpage "/monitor" []
   (common/monitor-layout
    [:h1 "Environmental monitor"]
-   [:div#monitor]
-   [:div#panel]
+   [:div#temperature]
+   [:div#humidity]
    ))
   
 
