@@ -12937,11 +12937,14 @@ var noirden = {client:{}};
 noirden.client.main = {};
 noirden.client.main.$temperature = cljs.core.first.call(null, jayq.core.$.call(null, "\ufdd0'#temperature"));
 noirden.client.main.$humidity = cljs.core.first.call(null, jayq.core.$.call(null, "\ufdd0'#humidity"));
+noirden.client.main.parse_date = function(a) {
+  return new Date(Date.parse(cljs.core.apply.call(null, cljs.core.str, cljs.core.replace.call(null, cljs.core.HashMap.fromArrays(["T"], [" "]), a))))
+};
 noirden.client.main.to_dygraph_array = function(a) {
-  return cljs.core.to_array.call(null, cljs.core.map.call(null, function(a) {
+  return cljs.core.to_array.call(null, cljs.core.reverse.call(null, cljs.core.map.call(null, function(a) {
     var c = cljs.core.nth.call(null, a, 0, null), a = cljs.core.nth.call(null, a, 1, null);
-    return cljs.core.array.call(null, new Date(c), a)
-  }, a))
+    return cljs.core.array.call(null, noirden.client.main.parse_date.call(null, c), a)
+  }, a)))
 };
 noirden.client.main.clj__GT_js = function(a) {
   var b = cljs.core.js_obj.call(null);

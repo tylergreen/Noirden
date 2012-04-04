@@ -10,12 +10,17 @@
 (def $temperature (first ($ :#temperature)))
 (def $humidity (first ($ :#humidity)))
 
+;; for strings of format YYYY-MM-DDT12:30
+(defn parse-date [time-string]
+  (new js/Date (.parse js/Date (apply str (replace {\T \ } time-string)))))
 
 ; test
 (defn to-dygraph-array [datapoints]
-  (to-array (map (fn [[time-string scalar]]
-                   (array (new js/Date time-string) scalar))
-                 datapoints)))
+  (to-array 
+   (reverse
+    (map (fn [[time-string scalar]]
+           (array (parse-date time-string) scalar))
+        datapoints))))
 
 ;; from maurits.wordpress.com/2012/02/13/first-clojurescript-experiences-using-raphael/
 (defn clj->js
@@ -40,3 +45,11 @@
                   (to-dygraph-array temps)
                   (clj->js {:title "temp" })) 
              (new js/Dygraph $humidity (to-dygraph-array hums))))
+
+;; (new js/Dygraph
+;;      $test
+;;      (array
+;;       (array (new js/Date (apply str "2012-04-04T00:03")) 30)
+;;       (array (new js/Date "2012-04-04T00:09") 10)
+;;       )
+;;      )

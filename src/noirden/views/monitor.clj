@@ -13,13 +13,14 @@
 ;; needs test
 (defremote latest-air-readings [n]
   (map #(map (fn [attr] (attr %)) [:time :ctemp :rhumidity])
-                (reading/latest-air-readings n)))
+       (reading/latest-air-readings n)))
 
 (defpage "/monitor" []
   (common/monitor-layout
    [:h1 "Environmental monitor"]
    [:div#temperature]
    [:div#humidity]
+   [:div#test]
    ))
   
 
