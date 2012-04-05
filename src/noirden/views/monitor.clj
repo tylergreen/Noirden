@@ -3,7 +3,7 @@
             [noirden.models.reading :as reading]
             )
   (:use
-   [noir.core :only [defpage]]
+   [noir.core :only [defpage defpartial]]
    [clojure.data.json :only [json-str]]
    [noir.fetch.remotes :only [defremote]]
         ))
@@ -15,12 +15,24 @@
   (map #(map (fn [attr] (attr %)) [:time :ctemp :rhumidity])
        (reading/latest-air-readings n)))
 
+(defpage "/test" []
+  (common/layout
+   [:div {:id "foo" :class "bar"} "Hey Dere"]
+   )
+  )
+
+(defpartial info-bar [name]
+  [:div {:id name :class "info_bar"}
+   [:div {:id (str name "_graph") :class "info_graph"} ]
+   [:div {:id (str name "_text") :class "info_text"} "" ]
+   ]
+  )
+
 (defpage "/monitor" []
   (common/monitor-layout
    [:h1 "Environmental monitor"]
-   [:div#temperature]
-   [:div#humidity]
-   [:div#test]
+   (info-bar "temperature")
+   (info-bar "humidity")
    ))
   
 

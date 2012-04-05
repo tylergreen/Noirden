@@ -12935,8 +12935,6 @@ jayq.core.prevent = function(a) {
 };
 var noirden = {client:{}};
 noirden.client.main = {};
-noirden.client.main.$temperature = cljs.core.first.call(null, jayq.core.$.call(null, "\ufdd0'#temperature"));
-noirden.client.main.$humidity = cljs.core.first.call(null, jayq.core.$.call(null, "\ufdd0'#humidity"));
 noirden.client.main.parse_date = function(a) {
   return new Date(Date.parse(cljs.core.apply.call(null, cljs.core.str, cljs.core.replace.call(null, cljs.core.HashMap.fromArrays(["T"], [" "]), a))))
 };
@@ -12946,6 +12944,13 @@ noirden.client.main.to_dygraph_array = function(a) {
     return cljs.core.array.call(null, noirden.client.main.parse_date.call(null, c), a)
   }, a)))
 };
+var group__3117__auto____155346 = cljs.core.swap_BANG_.call(null, crate.core.group_id, cljs.core.inc);
+noirden.client.main.info_box = function(a) {
+  a = crate.core.html.call(null, cljs.core.Vector.fromArray(["\ufdd0'p", a]));
+  a.setAttribute("crateGroup", group__3117__auto____155346);
+  return a
+};
+noirden.client.main.info_box.prototype._crateGroup = group__3117__auto____155346;
 noirden.client.main.clj__GT_js = function(a) {
   var b = cljs.core.js_obj.call(null);
   cljs.core.doall.call(null, cljs.core.map.call(null, function(a) {
@@ -12953,11 +12958,17 @@ noirden.client.main.clj__GT_js = function(a) {
   }, a));
   return b
 };
+noirden.client.main.add_info_bar = function(a, b, c) {
+  var d = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), a = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text"));
+  jayq.core.text.call(null, a, "foo");
+  return new Dygraph(d, noirden.client.main.to_dygraph_array.call(null, b), noirden.client.main.clj__GT_js.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'title"], {"\ufdd0'title":c})))
+};
 fetch.remotes.remote_callback.call(null, "latest-air-readings", cljs.core.Vector.fromArray([0]), function(a) {
   var b = cljs.core.reduce.call(null, function(a, b) {
     var e = cljs.core.nth.call(null, a, 0, null), f = cljs.core.nth.call(null, a, 1, null), g = cljs.core.nth.call(null, b, 0, null), h = cljs.core.nth.call(null, b, 1, null), i = cljs.core.nth.call(null, b, 2, null);
     return cljs.core.Vector.fromArray([cljs.core.cons.call(null, cljs.core.Vector.fromArray([g, h]), e), cljs.core.cons.call(null, cljs.core.Vector.fromArray([g, i]), f)])
   }, cljs.core.Vector.fromArray([cljs.core.Vector.fromArray([]), cljs.core.Vector.fromArray([])]), a), a = cljs.core.nth.call(null, b, 0, null), b = cljs.core.nth.call(null, b, 1, null);
-  new Dygraph(noirden.client.main.$temperature, noirden.client.main.to_dygraph_array.call(null, a), noirden.client.main.clj__GT_js.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'title"], {"\ufdd0'title":"temp"})));
-  return new Dygraph(noirden.client.main.$humidity, noirden.client.main.to_dygraph_array.call(null, b))
+  console.log("rpc");
+  noirden.client.main.add_info_bar.call(null, "#temperature", a, "temperature celsius");
+  return noirden.client.main.add_info_bar.call(null, "#humidity", b, "relative humidity %")
 });

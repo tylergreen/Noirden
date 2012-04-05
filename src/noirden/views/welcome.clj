@@ -10,9 +10,5 @@
   (common/layout
    [:p "Welcome to noirden"]))
 
-(defpage "/welcome2" []
-  (common/layout
-   [:p "Welcome to noirden"]))
-
     
 
