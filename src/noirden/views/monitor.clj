@@ -15,6 +15,12 @@
   (map #(map (fn [attr] (attr %)) [:time :ctemp :rhumidity])
        (reading/latest-air-readings n)))
 
+(defremote current-temp []
+  (reading/current :ctemp))
+
+(defremote current-rhumidity []
+  (reading/current :rhumidity))
+
 (defpage "/test" []
   (common/layout
    [:div {:id "foo" :class "bar"} "Hey Dere"]

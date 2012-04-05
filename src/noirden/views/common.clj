@@ -18,12 +18,13 @@
    [:head
     [:title "noirden sentinel"]
     (include-css "/css/reset.css")
+    (include-css "/css/monitor.css")
     (include-js
      "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
     (include-js "/js/dygraph-combined.js")
     ]
    [:body
-     content
+    content
     (include-js "/cljs/bootstrap.js")
     ]
 

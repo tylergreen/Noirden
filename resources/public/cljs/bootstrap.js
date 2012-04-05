@@ -12944,13 +12944,6 @@ noirden.client.main.to_dygraph_array = function(a) {
     return cljs.core.array.call(null, noirden.client.main.parse_date.call(null, c), a)
   }, a)))
 };
-var group__3117__auto____155346 = cljs.core.swap_BANG_.call(null, crate.core.group_id, cljs.core.inc);
-noirden.client.main.info_box = function(a) {
-  a = crate.core.html.call(null, cljs.core.Vector.fromArray(["\ufdd0'p", a]));
-  a.setAttribute("crateGroup", group__3117__auto____155346);
-  return a
-};
-noirden.client.main.info_box.prototype._crateGroup = group__3117__auto____155346;
 noirden.client.main.clj__GT_js = function(a) {
   var b = cljs.core.js_obj.call(null);
   cljs.core.doall.call(null, cljs.core.map.call(null, function(a) {
@@ -12959,8 +12952,15 @@ noirden.client.main.clj__GT_js = function(a) {
   return b
 };
 noirden.client.main.add_info_bar = function(a, b, c) {
-  var d = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), a = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text"));
-  jayq.core.text.call(null, a, "foo");
+  var d = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), a = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text")), e = cljs.core.last.call(null, b);
+  cljs.core.nth.call(null, e, 0, null);
+  var e = cljs.core.nth.call(null, e, 1, null), f = cljs.core.apply.call(null, cljs.core.partial.call(null, cljs.core.max_key, cljs.core.second), b);
+  cljs.core.nth.call(null, f, 0, null);
+  var f = cljs.core.nth.call(null, f, 1, null), g = cljs.core.apply.call(null, cljs.core.partial.call(null, cljs.core.min_key, cljs.core.second), b);
+  cljs.core.nth.call(null, g, 0, null);
+  g = cljs.core.nth.call(null, g, 1, null);
+  console.log(e);
+  jayq.core.text.call(null, a, cljs.core.str.call(null, "current: ", e, " max: ", f, " min: ", g));
   return new Dygraph(d, noirden.client.main.to_dygraph_array.call(null, b), noirden.client.main.clj__GT_js.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'title"], {"\ufdd0'title":c})))
 };
 fetch.remotes.remote_callback.call(null, "latest-air-readings", cljs.core.Vector.fromArray([0]), function(a) {

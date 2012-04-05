@@ -19,10 +19,6 @@
            (array (parse-date time-string) scalar))
         datapoints))))
 
-(defpartial info-box [info]
-  [:p info]
-  )
-
 ;; from maurits.wordpress.com/2012/02/13/first-clojurescript-experiences-using-raphael/
 (defn clj->js
   "makes a javascript map from a clojure one"
@@ -35,8 +31,12 @@
 (defn add-info-bar [div-id data title]
   (let [graph-div (first ($ (str div-id "_graph")))
         text-div ($ (str div-id "_text"))
+        [now current]  (last data)
+        [max-time max-reading] (apply (partial max-key second) data)
+        [min-time min-reading] (apply (partial min-key second) data)
         ]
-    (text text-div "foo")
+    (.log js/console current)
+    (text text-div (str "current: " current " max: " max-reading " min: " min-reading))
     (new js/Dygraph
          graph-div
          (to-dygraph-array data)
@@ -57,10 +57,3 @@
              (add-info-bar "#temperature" temps "temperature celsius")
              (add-info-bar "#humidity" hums "relative humidity %")))
 
-;; (new js/Dygraph
-;;      $test
-;;      (array
-;;       (array (new js/Date (apply str "2012-04-04T00:03")) 30)
-;;       (array (new js/Date "2012-04-04T00:09") 10)
-;;       )
-;;      )
