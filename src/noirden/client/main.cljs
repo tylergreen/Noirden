@@ -1,7 +1,7 @@
 (ns noirden.client.main
   (:require [crate.core :as crate]
             [fetch.remotes :as remotes])
-  (:use [jayq.core :only [$ append text delegate data inner]])
+  (:use [jayq.core :only [$ append text delegate data inner fade-out]])
   (:use-macros [crate.macros :only [defpartial]]
                [clojure.core :only [defn]])
   (:require-macros [fetch.macros :as fm])
@@ -40,9 +40,35 @@
     (new js/Dygraph
          graph-div
          (to-dygraph-array data)
-         (clj->js {:title title }))
+         (js* "{underlayCallback: function(canvas, area, g) {
+              console.log(area.x);
+              console.log(area.y);
+              console.log(area.h);
+              console.log(area.w);
+              console.log(g.xAxisRange());
+              console.log(g.yAxisRange());
+             
+              var range = g.xAxisRange();
+              var top = g.toDomYCoord(26);
+              var bottom = g.toDomYCoord(24);
+
+     var left = g.toDomXCoord(range[0]);
+              width = g.toDomXCoord(range[1]) - left;
+              console.log(width)
+              console.log(left)
+              console.log(top)
+              console.log(bottom)
+
+              canvas.fillStyle = 'rgba(0, 255, 0, 1.0)';
+              canvas.fillRect(left, top, area.w,  bottom - top);
+            }}"
+         )
+    )
+    )
   )
-)
+
+;; x,y coordinates of top left corner
+;;canvas.fillRect(x,y, height, width )
 
 ;; this should be testable
 ;; make latest chooseable
@@ -56,4 +82,5 @@
              (.log js/console "rpc")
              (add-info-bar "#temperature" temps "temperature celsius")
              (add-info-bar "#humidity" hums "relative humidity %")))
+
 

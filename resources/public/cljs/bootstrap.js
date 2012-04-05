@@ -12951,8 +12951,8 @@ noirden.client.main.clj__GT_js = function(a) {
   }, a));
   return b
 };
-noirden.client.main.add_info_bar = function(a, b, c) {
-  var d = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), a = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text")), e = cljs.core.last.call(null, b);
+noirden.client.main.add_info_bar = function(a, b) {
+  var c = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), d = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text")), e = cljs.core.last.call(null, b);
   cljs.core.nth.call(null, e, 0, null);
   var e = cljs.core.nth.call(null, e, 1, null), f = cljs.core.apply.call(null, cljs.core.partial.call(null, cljs.core.max_key, cljs.core.second), b);
   cljs.core.nth.call(null, f, 0, null);
@@ -12960,8 +12960,23 @@ noirden.client.main.add_info_bar = function(a, b, c) {
   cljs.core.nth.call(null, g, 0, null);
   g = cljs.core.nth.call(null, g, 1, null);
   console.log(e);
-  jayq.core.text.call(null, a, cljs.core.str.call(null, "current: ", e, " max: ", f, " min: ", g));
-  return new Dygraph(d, noirden.client.main.to_dygraph_array.call(null, b), noirden.client.main.clj__GT_js.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'title"], {"\ufdd0'title":c})))
+  jayq.core.text.call(null, d, cljs.core.str.call(null, "current: ", e, " max: ", f, " min: ", g));
+  return new Dygraph(c, noirden.client.main.to_dygraph_array.call(null, b), {underlayCallback:function(a, b, c) {
+    console.log(b.x);
+    console.log(b.y);
+    console.log(b.h);
+    console.log(b.w);
+    console.log(c.xAxisRange());
+    console.log(c.yAxisRange());
+    var d = c.xAxisRange(), e = c.toDomYCoord(26), f = c.toDomYCoord(24), g = c.toDomXCoord(d[0]);
+    width = c.toDomXCoord(d[1]) - g;
+    console.log(width);
+    console.log(g);
+    console.log(e);
+    console.log(f);
+    a.fillStyle = "rgba(0, 255, 0, 1.0)";
+    a.fillRect(g, e, b.w, f - e)
+  }})
 };
 fetch.remotes.remote_callback.call(null, "latest-air-readings", cljs.core.Vector.fromArray([0]), function(a) {
   var b = cljs.core.reduce.call(null, function(a, b) {

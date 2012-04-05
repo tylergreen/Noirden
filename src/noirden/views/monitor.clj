@@ -39,6 +39,7 @@
    [:h1 "Environmental monitor"]
    (info-bar "temperature")
    (info-bar "humidity")
+   [:div#foo "HI DERE!"]
    ))
   
 
