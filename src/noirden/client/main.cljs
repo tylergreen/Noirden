@@ -27,45 +27,36 @@
     (doall (map #(aset out (name (first %)) (second %)) cljmap))
     out))
 
+
 ;; I think the selectors are not working
-(defn add-info-bar [div-id data title]
+(defn add-info-bar [div-id data title [low high]]
   (let [graph-div (first ($ (str div-id "_graph")))
         text-div ($ (str div-id "_text"))
         [now current]  (last data)
         [max-time max-reading] (apply (partial max-key second) data)
         [min-time min-reading] (apply (partial min-key second) data)
         ]
-    (.log js/console current)
     (text text-div (str "current: " current " max: " max-reading " min: " min-reading))
     (new js/Dygraph
          graph-div
          (to-dygraph-array data)
-         (js* "{underlayCallback: function(canvas, area, g) {
-              console.log(area.x);
-              console.log(area.y);
-              console.log(area.h);
-              console.log(area.w);
-              console.log(g.xAxisRange());
-              console.log(g.yAxisRange());
-             
-              var range = g.xAxisRange();
-              var top = g.toDomYCoord(26);
-              var bottom = g.toDomYCoord(24);
+         (customize-graph low high))))
 
-     var left = g.toDomXCoord(range[0]);
-              width = g.toDomXCoord(range[1]) - left;
-              console.log(width)
-              console.log(left)
-              console.log(top)
-              console.log(bottom)
+(defn customize-graph [low high]
+  (let [options (js-obj)
+        callback (fn [canvas area g]
+                   (let [range (.xAxisRange g)
+                         top (.toDomYCoord g high)
+                         bottom (.toDomYCoord g low)
+                         left (.toDomXCoord g (first range)) ]
+                     (aset canvas "fillStyle" "rgba(0, 255, 0, 1.0)")
+                     (.fillRect canvas left top (.-w area) (- bottom top))))
+        ]
+    (aset options "underlayCallback" callback)
+    options))
+  
+  
 
-              canvas.fillStyle = 'rgba(0, 255, 0, 1.0)';
-              canvas.fillRect(left, top, area.w,  bottom - top);
-            }}"
-         )
-    )
-    )
-  )
 
 ;; x,y coordinates of top left corner
 ;;canvas.fillRect(x,y, height, width )
@@ -79,8 +70,7 @@
                                     (cons [time hum] hs) ])
                                 [ [] [] ] table)
                   ]
-             (.log js/console "rpc")
-             (add-info-bar "#temperature" temps "temperature celsius")
-             (add-info-bar "#humidity" hums "relative humidity %")))
+             (add-info-bar "#temperature" temps "temperature celsius" [21 27])
+             (add-info-bar "#humidity" hums "relative humidity %" [35 60])))
 
 

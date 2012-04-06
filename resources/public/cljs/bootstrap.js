@@ -12951,39 +12951,31 @@ noirden.client.main.clj__GT_js = function(a) {
   }, a));
   return b
 };
-noirden.client.main.add_info_bar = function(a, b) {
-  var c = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), d = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text")), e = cljs.core.last.call(null, b);
-  cljs.core.nth.call(null, e, 0, null);
-  var e = cljs.core.nth.call(null, e, 1, null), f = cljs.core.apply.call(null, cljs.core.partial.call(null, cljs.core.max_key, cljs.core.second), b);
+noirden.client.main.add_info_bar = function(a, b, c, d) {
+  var c = cljs.core.nth.call(null, d, 0, null), d = cljs.core.nth.call(null, d, 1, null), e = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), a = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text")), f = cljs.core.last.call(null, b);
   cljs.core.nth.call(null, f, 0, null);
-  var f = cljs.core.nth.call(null, f, 1, null), g = cljs.core.apply.call(null, cljs.core.partial.call(null, cljs.core.min_key, cljs.core.second), b);
+  var f = cljs.core.nth.call(null, f, 1, null), g = cljs.core.apply.call(null, cljs.core.partial.call(null, cljs.core.max_key, cljs.core.second), b);
   cljs.core.nth.call(null, g, 0, null);
-  g = cljs.core.nth.call(null, g, 1, null);
-  console.log(e);
-  jayq.core.text.call(null, d, cljs.core.str.call(null, "current: ", e, " max: ", f, " min: ", g));
-  return new Dygraph(c, noirden.client.main.to_dygraph_array.call(null, b), {underlayCallback:function(a, b, c) {
-    console.log(b.x);
-    console.log(b.y);
-    console.log(b.h);
-    console.log(b.w);
-    console.log(c.xAxisRange());
-    console.log(c.yAxisRange());
-    var d = c.xAxisRange(), e = c.toDomYCoord(26), f = c.toDomYCoord(24), g = c.toDomXCoord(d[0]);
-    width = c.toDomXCoord(d[1]) - g;
-    console.log(width);
-    console.log(g);
-    console.log(e);
-    console.log(f);
-    a.fillStyle = "rgba(0, 255, 0, 1.0)";
-    a.fillRect(g, e, b.w, f - e)
-  }})
+  var g = cljs.core.nth.call(null, g, 1, null), h = cljs.core.apply.call(null, cljs.core.partial.call(null, cljs.core.min_key, cljs.core.second), b);
+  cljs.core.nth.call(null, h, 0, null);
+  h = cljs.core.nth.call(null, h, 1, null);
+  jayq.core.text.call(null, a, cljs.core.str.call(null, "current: ", f, " max: ", g, " min: ", h));
+  return new Dygraph(e, noirden.client.main.to_dygraph_array.call(null, b), noirden.client.main.customize_graph.call(null, c, d))
+};
+noirden.client.main.customize_graph = function(a, b) {
+  var c = cljs.core.js_obj.call(null);
+  c.underlayCallback = function(c, e, f) {
+    var g = f.xAxisRange(), h = f.toDomYCoord(b), i = f.toDomYCoord(a), f = f.toDomXCoord(cljs.core.first.call(null, g));
+    c.fillStyle = "rgba(0, 255, 0, 1.0)";
+    return c.fillRect(f, h, e.w, i - h)
+  };
+  return c
 };
 fetch.remotes.remote_callback.call(null, "latest-air-readings", cljs.core.Vector.fromArray([0]), function(a) {
   var b = cljs.core.reduce.call(null, function(a, b) {
     var e = cljs.core.nth.call(null, a, 0, null), f = cljs.core.nth.call(null, a, 1, null), g = cljs.core.nth.call(null, b, 0, null), h = cljs.core.nth.call(null, b, 1, null), i = cljs.core.nth.call(null, b, 2, null);
     return cljs.core.Vector.fromArray([cljs.core.cons.call(null, cljs.core.Vector.fromArray([g, h]), e), cljs.core.cons.call(null, cljs.core.Vector.fromArray([g, i]), f)])
   }, cljs.core.Vector.fromArray([cljs.core.Vector.fromArray([]), cljs.core.Vector.fromArray([])]), a), a = cljs.core.nth.call(null, b, 0, null), b = cljs.core.nth.call(null, b, 1, null);
-  console.log("rpc");
-  noirden.client.main.add_info_bar.call(null, "#temperature", a, "temperature celsius");
-  return noirden.client.main.add_info_bar.call(null, "#humidity", b, "relative humidity %")
+  noirden.client.main.add_info_bar.call(null, "#temperature", a, "temperature celsius", cljs.core.Vector.fromArray([21, 27]));
+  return noirden.client.main.add_info_bar.call(null, "#humidity", b, "relative humidity %", cljs.core.Vector.fromArray([35, 60]))
 });
