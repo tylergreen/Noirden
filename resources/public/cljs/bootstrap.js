@@ -12944,13 +12944,6 @@ noirden.client.main.to_dygraph_array = function(a) {
     return cljs.core.array.call(null, noirden.client.main.parse_date.call(null, c), a)
   }, a)))
 };
-noirden.client.main.clj__GT_js = function(a) {
-  var b = cljs.core.js_obj.call(null);
-  cljs.core.doall.call(null, cljs.core.map.call(null, function(a) {
-    return b[cljs.core.name.call(null, cljs.core.first.call(null, a))] = cljs.core.second.call(null, a)
-  }, a));
-  return b
-};
 noirden.client.main.add_info_bar = function(a, b, c, d) {
   var c = cljs.core.nth.call(null, d, 0, null), d = cljs.core.nth.call(null, d, 1, null), e = cljs.core.first.call(null, jayq.core.$.call(null, cljs.core.str.call(null, a, "_graph"))), a = jayq.core.$.call(null, cljs.core.str.call(null, a, "_text")), f = cljs.core.last.call(null, b);
   cljs.core.nth.call(null, f, 0, null);

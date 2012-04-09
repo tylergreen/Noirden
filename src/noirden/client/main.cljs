@@ -19,16 +19,6 @@
            (array (parse-date time-string) scalar))
         datapoints))))
 
-;; from maurits.wordpress.com/2012/02/13/first-clojurescript-experiences-using-raphael/
-(defn clj->js
-  "makes a javascript map from a clojure one"
-  [cljmap]
-  (let [out (js-obj)]
-    (doall (map #(aset out (name (first %)) (second %)) cljmap))
-    out))
-
-
-;; I think the selectors are not working
 (defn add-info-bar [div-id data title [low high]]
   (let [graph-div (first ($ (str div-id "_graph")))
         text-div ($ (str div-id "_text"))
