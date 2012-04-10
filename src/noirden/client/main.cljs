@@ -24,11 +24,11 @@
 (defn add-info-bar [{:keys [div-id data graph-range acceptable-range target-range]}]
   (let [graph-div (first ($ (str div-id "_graph")))
         text-div ($ (str div-id "_text"))
-        [now current]  (last data)
+        [now current] (first data)
         [max-time max-reading] (apply (partial max-key second) data)
         [min-time min-reading] (apply (partial min-key second) data)
         ]
-    (text text-div (str "current: " current " max: " max-reading " min: " min-reading))
+    (text text-div (str "current: " current " now: " now  " max: " max-reading " min: " min-reading))
     (new js/Dygraph
          graph-div
          (to-dygraph-array data)
@@ -51,7 +51,7 @@
   (let [options {:underlayCallback (fn [canvas area g]
                                      ((underlay-callback "rgba(255, 255, 0, 1.0)" acceptable-range) canvas area g)
                                      ((underlay-callback "rgba(0, 255, 0, 1.0)" target-range) canvas area g))
-                 :valueRange (util/clj->js graph-range)
+                 ;; :valueRange (util/clj->js graph-range)
                  }
         ]
     (util/clj->js options)
