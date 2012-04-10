@@ -9,3 +9,9 @@
   (map #(select-keys % [:time :ctemp :rhumidity])
        (with-mongo db (fetch "air"))))
 
+;; replace this with tailable cursors or something
+;; this will probably become inefficient
+(defn current [var]
+   (last (with-mongo db (fetch "air" :only [:var]))))
+
+
