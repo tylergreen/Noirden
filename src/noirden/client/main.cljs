@@ -1,6 +1,8 @@
 (ns noirden.client.main
   (:require [crate.core :as crate]
-            [fetch.remotes :as remotes])
+            [fetch.remotes :as remotes]
+            [clojure.string :as string]
+            [jayq.util :as util]  )
   (:use [jayq.core :only [$ append text delegate data inner fade-out]])
   (:use-macros [crate.macros :only [defpartial]]
                [clojure.core :only [defn]])
@@ -19,7 +21,7 @@
            (array (parse-date time-string) scalar))
         datapoints))))
 
-(defn add-info-bar [div-id data title [low high]]
+(defn add-info-bar [{:keys [div-id data graph-range acceptable-range target-range]}]
   (let [graph-div (first ($ (str div-id "_graph")))
         text-div ($ (str div-id "_text"))
         [now current]  (last data)
@@ -30,21 +32,30 @@
     (new js/Dygraph
          graph-div
          (to-dygraph-array data)
-         (customize-graph low high))))
+         (customize-graph {:graph-range graph-range
+                           :acceptable-range acceptable-range
+                           :target-range target-range}))))
 
-(defn customize-graph [low high]
-  (let [options (js-obj)
-        callback (fn [canvas area g]
-                   (let [range (.xAxisRange g)
-                         top (.toDomYCoord g high)
-                         bottom (.toDomYCoord g low)
-                         left (.toDomXCoord g (first range)) ]
-                     (aset canvas "fillStyle" "rgba(0, 255, 0, 1.0)")
-                     (.fillRect canvas left top (.-w area) (- bottom top))))
+(defn underlay-callback [color [low high]]
+  (fn [canvas area g]
+    (let [range (.xAxisRange g)
+          top (.toDomYCoord g high)
+          bottom (.toDomYCoord g low)
+          left (.toDomXCoord g (first range)) ]
+      (aset canvas "fillStyle" color)
+      (.fillRect canvas left top (.-w area) (- bottom top)))
+    )
+  )
+
+(defn customize-graph [{:keys [graph-range acceptable-range target-range]}]
+  (let [options {:underlayCallback (fn [canvas area g]
+                                     ((underlay-callback "rgba(255, 255, 0, 1.0)" acceptable-range) canvas area g)
+                                     ((underlay-callback "rgba(0, 255, 0, 1.0)" target-range) canvas area g))
+                 :valueRange (util/clj->js graph-range)
+                 }
         ]
-    (aset options "underlayCallback" callback)
-    options))
-  
+    (util/clj->js options)
+    ))
   
 
 
@@ -60,7 +71,11 @@
                                     (cons [time hum] hs) ])
                                 [ [] [] ] table)
                   ]
-             (add-info-bar "#temperature" temps "temperature celsius" [21 27])
-             (add-info-bar "#humidity" hums "relative humidity %" [35 60])))
+             (add-info-bar {:div-id "#temperature"
+                            :data temps
+                            :graph-range [5 40]
+                            :acceptable-range [10 27]
+                            :target-range [13 23]})
+             (add-info-bar {:div-id "#humidity", :data hums, :graph-range [5 95], :acceptable-range [35 75], :target-range [40 60] })))
 
 
