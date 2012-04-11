@@ -16,10 +16,12 @@
 ; test
 (defn to-dygraph-array [datapoints]
   (to-array 
-   (reverse
     (map (fn [[time-string scalar]]
            (array (parse-date time-string) scalar))
-        datapoints))))
+         datapoints)))
+
+(defpartial info-list [items]
+  (apply (partial conj [:ul]) (map (fn [line] [:li (string/join " " line)]) items)))
 
 (defn add-info-bar [{:keys [div-id data graph-range acceptable-range target-range]}]
   (let [graph-div (first ($ (str div-id "_graph")))
@@ -28,7 +30,9 @@
         [max-time max-reading] (apply (partial max-key second) data)
         [min-time min-reading] (apply (partial min-key second) data)
         ]
-    (text text-div (str "current: " current " now: " now  " max: " max-reading " min: " min-reading))
+    (append text-div (info-list [ [ "current:" current ]
+                                  ["max:" max-reading max-time ]
+                                  ["min:" min-reading min-time] ]))
     (new js/Dygraph
          graph-div
          (to-dygraph-array data)
@@ -64,18 +68,32 @@
 
 ;; this should be testable
 ;; make latest chooseable
-(fm/letrem [table (latest-air-readings 0)]
-           (let [ [temps hums] (reduce
-                                (fn [ [ts hs] [time temp hum] ]
-                                  [ (cons [time temp] ts)
-                                    (cons [time hum] hs) ])
-                                [ [] [] ] table)
-                  ]
+
+;; factor out this one pass hubris
+;; It reverses the array and makes everything more complicated.
+;; Just use 2 maps
+(fm/letrem [temps (latest-air-readings 0 :ctemp)]
              (add-info-bar {:div-id "#temperature"
                             :data temps
                             :graph-range [5 40]
                             :acceptable-range [10 27]
-                            :target-range [13 23]})
-             (add-info-bar {:div-id "#humidity", :data hums, :graph-range [5 95], :acceptable-range [35 75], :target-range [40 60] })))
+                            :target-range [13 23]}))
+
+(fm/letrem [hums (latest-air-readings 0 :rhumidity)]
+           (add-info-bar {:div-id "#humidity"
+                          :data hums
+                          :graph-range [5 95]
+                          :acceptable-range [35 75]
+                          :target-range [40 60] }))
+
+(fm/letrem [water-readings (latest-water-readings 0)]
+             (add-info-bar {:div-id "#reservoir"
+                            :data water-readings
+                            :target-range [16 23]
+                            :acceptable-range [13 27]
+                            :graph-range [10 30]
+                            }))
+
+
 
 

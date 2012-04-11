@@ -11,9 +11,13 @@
 ;; try to send these amount of data over network
 ;; did it this way bc select-keys returns unsorted hash-map :-(
 ;; needs test
-(defremote latest-air-readings [n]
-  (map #(map (fn [attr] (attr %)) [:time :ctemp :rhumidity])
-       (reading/latest-air-readings n)))
+(defremote latest-air-readings [n attr]
+  (map #(map (fn [attr] (attr %)) [:time attr])
+       (reading/latest-air-readings n attr)))
+
+(defremote latest-water-readings [n]
+  (map #(map (fn [attr] (attr %)) [:time :water_temp_celsius])
+       (reading/latest-water-readings n)))
 
 (defremote current-temp []
   (reading/current :ctemp))
@@ -39,6 +43,7 @@
    [:h1 "Environmental monitor"]
    (info-bar "temperature")
    (info-bar "humidity")
+   (info-bar "reservoir")
    ))
   
 
