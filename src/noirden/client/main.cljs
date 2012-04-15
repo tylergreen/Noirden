@@ -72,21 +72,21 @@
 ;; factor out this one pass hubris
 ;; It reverses the array and makes everything more complicated.
 ;; Just use 2 maps
-(fm/letrem [temps (latest-air-readings 0 :ctemp)]
+(fm/letrem [temps (latest-air-readings 6000 :ctemp)]
              (add-info-bar {:div-id "#temperature"
                             :data temps
                             :graph-range [5 40]
                             :acceptable-range [10 27]
                             :target-range [13 23]}))
 
-(fm/letrem [hums (latest-air-readings 0 :rhumidity)]
+(fm/letrem [hums (latest-air-readings 6000 :rhumidity)]
            (add-info-bar {:div-id "#humidity"
                           :data hums
                           :graph-range [5 95]
                           :acceptable-range [35 75]
                           :target-range [40 60] }))
 
-(fm/letrem [water-readings (latest-water-readings 0)]
+(fm/letrem [water-readings (latest-water-readings 6000)]
              (add-info-bar {:div-id "#reservoir"
                             :data water-readings
                             :target-range [16 23]
