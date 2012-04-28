@@ -1,0 +1,5 @@
+* change arduino code so it takes readings every second instead of every 5
+* think about modularizing code so this does't get out of hand
+* think about if cron is the best way to call these... especially if we add more.
+- maybe a sensor-server would be better way
+- want to keep this all together so its easier to maintain, backup, recreate

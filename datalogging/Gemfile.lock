@@ -1,0 +1,14 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    bson (1.6.2)
+    mongo (1.6.2)
+      bson (~> 1.6.2)
+    serialport (1.0.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mongo
+  serialport
